@@ -1,4 +1,6 @@
-# EventBus Documentation
+# A simple JavaScript event bus
+
+## Documentation EventBus 
 
 ## Languages
 ### Russian https://github.com/artemsites/event-bus/blob/main/README.ru.md
