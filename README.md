@@ -12,7 +12,7 @@ EventBus is a lightweight implementation of the publish/subscribe event system d
 An `EventBus` instance is created inside the module file, so there is no need for manual instantiation. You simply import the instance and start using it:
 
 ```javascript
-import eventBus from '/path/to/EventBus';
+import eventBus from '/path/to/eventBus';
 ```
 
 ## Methods
