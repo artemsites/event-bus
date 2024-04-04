@@ -8,38 +8,27 @@ class EventBus {
     this.listeners[event] = this.listeners[event] || []
     this.listeners[event].push(callback)
 
-    this.queue.forEach((queuedEvent) => {
-      if (queuedEvent.event === event) {
-        setTimeout(() => {
-          callback(...queuedEvent.args)
-        }, 0)
+    this.queue = this.queue.filter(({ event: e, args }) => {
+      if (e === event) {
+        setTimeout(() => callback(...args), 0)
+        return false
       }
+
+      return true
     })
-    this.queue = this.queue.filter((queuedEvent) => queuedEvent.event !== event)
   }
 
   off(event, callback) {
-    if (!this.listeners[event]) {
-      return
-    }
-    this.listeners[event] = this.listeners[event].filter(
-      (listener) => listener !== callback
-    )
-    if (this.listeners[event].length === 0) {
-      delete this.listeners[event]
+    if (this.listeners[event]) {
+      this.listeners[event] = this.listeners[event].filter(listener => listener !== callback)
+      if (!this.listeners[event].length) delete this.listeners[event]
     }
   }
 
   emit(event, ...args) {
-    if (this.listeners[event]) {
-      this.listeners[event].forEach((callback) => {
-        setTimeout(() => {
-          callback(...args)
-        }, 0)
-      })
-    } else {
-      this.queue.push({ event: event, args })
-    }
+    (this.listeners[event] || this.queue.push({ event, args })).forEach(callback => {
+      setTimeout(() => callback(...args), 0)
+    })
   }
 }
 
