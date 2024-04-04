@@ -1,5 +1,8 @@
 # EventBus Documentation
 
+## Languages
+### Russian https://github.com/artemsites/event-bus/blob/main/README.ru.md
+
 EventBus is a lightweight implementation of the publish/subscribe event system designed for use in JavaScript applications.
 
 ## Creating an EventBus Instance
