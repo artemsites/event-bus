@@ -89,3 +89,12 @@ export default eventBus;
 ```
 
 Import this instance into any part of your application to emit and listen for events.
+
+## Note on asynchrony
+The queue (this.queue) in the event bus implementation, EventBus is used to store events that were generated ("emitted") before handlers were registered on them. This is a mechanism that provides asynchronous event handling and allows you to first generate an event and then subscribe to it.
+
+When the emit method is called for an event for which there are currently no handlers, the event, along with its arguments, is queued. If a handler for this event subsequently appears (via calling the on method), it will immediately be called for each event in the queue that corresponds to the name of the event being subscribed, and the arguments passed when the event was generated will be passed to it.
+
+In other words, this is a solution for situations where emit is called before on registers the handler. Without such a queue, events would simply be lost if they were generated before the handler was assigned.
+
+After the handler is called for events from the queue, it is filtered to remove these events. This prevents the same handlers from being called again if they are added later.
