@@ -1,27 +1,27 @@
-# Документация EventBus
+# EventBus Documentation
 
-EventBus - это легковесная реализация системы публикации/подписки на события, предназначенная для использования в JavaScript-приложениях.
+EventBus is a lightweight implementation of the publish/subscribe event system designed for use in JavaScript applications.
 
-## Создание экземпляра EventBus
+## Creating an EventBus Instance
 
-Экземпляр `EventBus` создается внутри файла модуля, поэтому его не нужно создавать вручную. Вы просто импортируете экземпляр и начинаете его использовать:
+An `EventBus` instance is created inside the module file, so there is no need for manual instantiation. You simply import the instance and start using it:
 
 ```javascript
 import eventBus from '/path/to/EventBus';
 ```
 
-## Методы
+## Methods
 
 ### on(event, callback)
 
-Подписывает функцию `callback` на событие `event`.
+Subscribes a `callback` function to an `event`.
 
-**Параметры:**
+**Parameters:**
 
-- `event` (String): Имя события.
-- `callback` (Function): Обработчик события, который вызывается при срабатывании события.
+- `event` (String): The name of the event.
+- `callback` (Function): The event handler to be called when the event is emitted.
 
-**Пример:**
+**Example:**
 
 ```javascript
 eventBus.on('message', function(data) {
@@ -31,14 +31,14 @@ eventBus.on('message', function(data) {
 
 ### off(event, callback)
 
-Отписывает функцию `callback` от события `event`.
+Unsubscribes a `callback` function from an `event`.
 
-**Параметры:**
+**Parameters:**
 
-- `event` (String): Имя события.
-- `callback` (Function): Обработчик события, который был подписан ранее.
+- `event` (String): The name of the event.
+- `callback` (Function): The event handler that was previously subscribed.
 
-**Пример:**
+**Example:**
 
 ```javascript
 eventBus.off('message', messageHandler);
@@ -46,41 +46,41 @@ eventBus.off('message', messageHandler);
 
 ### emit(event, ...args)
 
-Генерирует событие `event`, передавая все последующие аргументы подписанным на это событие функциям обратного вызова (`callback`).
+Emits an `event`, passing all subsequent arguments to the subscribed callback functions (`callback`).
 
-**Параметры:**
+**Parameters:**
 
-- `event` (String): Имя генерируемого события.
-- `...args`: Аргументы, которые будут переданы в функцию `callback`.
+- `event` (String): The name of the event to emit.
+- `...args`: Arguments that will be passed to the callback function.
 
-**Пример:**
+**Example:**
 
 ```javascript
 eventBus.emit('message', 'Hello, World!');
 ```
 
-## Работа с очередью
+## Queue Handling
 
-EventBus также включает в себя механизм очереди для событий, для которых еще нет обработчика. Когда обработчик подписывается на событие, все события из очереди, соответствующие этому событию, обрабатываются немедленно.
+EventBus also incorporates a queuing mechanism for events that do not yet have a handler. When a handler subscribes to an event, all queued events matching that event are processed immediately.
 
 ```javascript
-// Предположим, что событие 'message' было сгенерировано, но обработчик еще не подписан
+// Suppose the 'message' event is emitted, but no handler is subscribed yet
 eventBus.emit('message', 'Delayed message');
 
-// Теперь подписываем обработчик, и он немедленно получает событие из очереди
+// Now, once a handler is subscribed, it immediately processes the event from the queue
 eventBus.on('message', function(data) {
   console.log('Event message received:', data);
 });
 ```
 
-Используйте `EventBus` с осторожностью, чтобы избежать утечек памяти или необоснованных подписок, убедитесь, что отписываетесь от событий при очистке или размонтировании компонентов.
+Use `EventBus` with care to avoid memory leaks or unwarranted subscriptions, ensure you unsubscribe from events during cleanup or component unmounts.
 
-## Экспорт экземпляра EventBus
+## EventBus Instance Export
 
-Экземпляр `EventBus` экспортируется из модуля, чтобы гарантировать, что во всем приложении используется один и тот же экземпляр.
+An `EventBus` instance is exported from the module to ensure a single instance is used throughout the application.
 
 ```javascript
 export default eventBus;
 ```
 
-Импортируйте этот экземпляр в любой части вашего приложения для отправки и прослушивания событий.
+Import this instance into any part of your application to emit and listen for events.
