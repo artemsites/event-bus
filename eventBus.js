@@ -26,9 +26,13 @@ class EventBus {
   }
 
   emit(event, ...args) {
-    (this.listeners[event] || this.queue.push({ event, args })).forEach(callback => {
-      setTimeout(() => callback(...args), 0)
-    })
+    if (this.listeners[event]) {
+      this.listeners[event].forEach(callback => {
+        setTimeout(() => callback(...args), 0);
+      });
+    } else {
+      this.queue.push({ event, args });
+    }
   }
 }
 
